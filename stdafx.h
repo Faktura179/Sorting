@@ -6,9 +6,11 @@
 #pragma once
 
 #include "targetver.h"
+#include "src/StateMachine.h"
+#include "src/State.h"
 
 #include <stdio.h>
-#include <tchar.h>
+//#include <tchar.h>
 
 
 
