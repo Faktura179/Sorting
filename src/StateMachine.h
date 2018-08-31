@@ -7,14 +7,15 @@ class AbstractState;
 class Machine{
 private:
     AbstractState* _state;
-
-public:
     sf::RenderWindow _window;
+public:
     Machine();
     void draw();
     void update();
     void setState(AbstractState*);
-    void handleEvents(sf::Event::EventType);
+    void handleEvents();
+    bool windowIsOpen();
+    void windowDisplay();
     ~Machine();
 };
 #endif

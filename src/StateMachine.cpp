@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SFML/OpenGL.hpp>
 #include "StateMachine.h"
 
 
@@ -21,8 +22,28 @@ void Machine::update(){
 void Machine::setState(AbstractState* state){
     _state = state;
 }
-void Machine::handleEvents(sf::Event::EventType event){
-    _state->handleEvents(event, this);
+void Machine::handleEvents(){
+    sf::Event event;
+    while (_window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+			{
+				// end the program
+				_window.close();
+			}
+			else if (event.type == sf::Event::Resized)
+			{
+				// adjust the viewport when the window is resized
+				glViewport(0, 0, event.size.width, event.size.height);
+			}
+            _state->handleEvents(event.type, this);
+        }
+}
+bool Machine::windowIsOpen(){
+    return _window.isOpen();
+}
+void Machine::windowDisplay(){
+    _window.display();
 }
 Machine::~Machine(){
     delete _state;
