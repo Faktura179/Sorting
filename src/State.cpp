@@ -37,6 +37,7 @@ MenuState::MenuState(){
 }
 void MenuState::draw(sf::RenderWindow* window){
     window->draw(_rect);
+    window->draw(_btn);
 }
 void MenuState::update(Machine*){
 

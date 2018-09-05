@@ -4,6 +4,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "StateMachine.h"
+#include "Button.h"
+
 class Machine;
 
 class AbstractState{
@@ -28,6 +30,7 @@ public:
 
 class MenuState : public AbstractState{
     sf::RectangleShape _rect;
+    Button _btn;
 public:
     MenuState();
     void draw(sf::RenderWindow*);
