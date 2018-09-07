@@ -14,6 +14,7 @@ public:
     void update();
     void setState(AbstractState*);
     void handleEvents();
+    sf::RenderWindow* getWindow();
     bool windowIsOpen();
     void windowDisplay();
     ~Machine();

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <functional>
 
 
 class Button: public sf::Drawable{
@@ -10,10 +11,13 @@ class Button: public sf::Drawable{
     static sf::Font _font;
     sf::Text _text;
     sf::RectangleShape _rect;
+    sf::Color _fill;
 public:
     Button();
     Button(std::string, sf::Color, sf::Vector2f, sf::Color);
     void draw(sf::RenderTarget&, sf::RenderStates) const;
+    void onClick(sf::RenderWindow*, std::function<void()>);
+    void hover(sf::RenderWindow*);
     ~Button();
 };
 

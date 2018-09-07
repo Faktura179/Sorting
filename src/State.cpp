@@ -39,11 +39,13 @@ void MenuState::draw(sf::RenderWindow* window){
     window->draw(_rect);
     window->draw(_btn);
 }
-void MenuState::update(Machine*){
-
+void MenuState::update(Machine* machine){
+    _btn.hover(machine->getWindow());
 }
 void MenuState::handleEvents(sf::Event::EventType event, Machine* machine){
-
+    if(event == sf::Event::EventType::MouseButtonPressed){
+        _btn.onClick(machine->getWindow(), [](){});
+    }
 }
 MenuState::~MenuState(){
 

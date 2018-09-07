@@ -45,6 +45,9 @@ bool Machine::windowIsOpen(){
 void Machine::windowDisplay(){
     _window.display();
 }
+sf::RenderWindow* Machine::getWindow(){
+	return &_window;
+}
 Machine::~Machine(){
     delete _state;
 }
