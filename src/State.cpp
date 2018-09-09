@@ -23,7 +23,7 @@ void SplashState::update(Machine* machine){
         machine->setState(new MenuState());
     }
 }
-void SplashState::handleEvents(sf::Event::EventType event, Machine* machine){
+void SplashState::handleEvents(sf::Event event, Machine* machine){
 
 }
 SplashState::~SplashState(){
@@ -31,22 +31,24 @@ SplashState::~SplashState(){
 }
 
 MenuState::MenuState(){
+    _btn = new Button();
     _rect.setFillColor(sf::Color::Magenta);
     _rect.setSize(sf::Vector2f(700,500));
     _rect.move(50,50);
 }
 void MenuState::draw(sf::RenderWindow* window){
     window->draw(_rect);
-    window->draw(_btn);
+    window->draw(*_btn);
 }
 void MenuState::update(Machine* machine){
-    _btn.hover(machine->getWindow());
+    _btn->hover(machine->getWindow());
 }
-void MenuState::handleEvents(sf::Event::EventType event, Machine* machine){
-    if(event == sf::Event::EventType::MouseButtonPressed){
-        _btn.onClick(machine->getWindow(), [](){});
+void MenuState::handleEvents(sf::Event event, Machine* machine){
+    if(event.type == sf::Event::MouseButtonPressed){
+        if(event.mouseButton.button==sf::Mouse::Left)
+            _btn->onClick(machine, [](Machine* machine){machine->setState(new SplashState());});
     }
 }
 MenuState::~MenuState(){
-
+    delete _btn;
 }

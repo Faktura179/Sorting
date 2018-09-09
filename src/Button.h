@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <functional>
+#include "StateMachine.h"
+class Machine;
 
 
 class Button: public sf::Drawable{
@@ -14,9 +16,8 @@ class Button: public sf::Drawable{
     sf::Color _fill;
 public:
     Button();
-    Button(std::string, sf::Color, sf::Vector2f, sf::Color);
     void draw(sf::RenderTarget&, sf::RenderStates) const;
-    void onClick(sf::RenderWindow*, std::function<void()>);
+    void onClick(Machine*, std::function<void(Machine*)>);
     void hover(sf::RenderWindow*);
     ~Button();
 };

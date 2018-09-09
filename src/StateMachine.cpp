@@ -20,6 +20,7 @@ void Machine::update(){
     _state -> update(this);
 }
 void Machine::setState(AbstractState* state){
+	delete _state;
     _state = state;
 }
 void Machine::handleEvents(){
@@ -36,7 +37,7 @@ void Machine::handleEvents(){
 				// adjust the viewport when the window is resized
 				glViewport(0, 0, event.size.width, event.size.height);
 			}
-            _state->handleEvents(event.type, this);
+            _state->handleEvents(event, this);
         }
 }
 bool Machine::windowIsOpen(){
