@@ -11,10 +11,11 @@ class Button;
 
 class AbstractState{
 public:
+    //AbstractState();  //unnecessary constructor (does nothing)
     void virtual draw(sf::RenderWindow*)=0;
     void virtual handleEvents(sf::Event, Machine*)=0;
     void virtual update(Machine*)=0;
-    virtual ~AbstractState();
+    //~AbstractState(); //same here
 };
 
 class SplashState : public AbstractState{
@@ -34,6 +35,8 @@ class MenuState : public AbstractState{
     Button* _btn;
 public:
     MenuState();
+    MenuState(const MenuState&) = delete;
+    MenuState& operator=(const MenuState) = delete;
     void draw(sf::RenderWindow*);
     void handleEvents(sf::Event, Machine*);
     void update(Machine*);

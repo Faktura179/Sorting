@@ -16,6 +16,7 @@ class Button: public sf::Drawable{
     sf::Color _fill;
 public:
     Button();
+    Button(std::string, sf::Vector2f);
     void draw(sf::RenderTarget&, sf::RenderStates) const;
     void onClick(Machine*, std::function<void(Machine*)>);
     void hover(sf::RenderWindow*);

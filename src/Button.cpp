@@ -16,7 +16,23 @@ Button::Button(){
     _rect.setPosition(_text.getPosition());
     _fill=sf::Color(0,0,0);
     _rect.setFillColor(_fill);
-    _rect.setSize(sf::Vector2f(_text.getGlobalBounds().width,_text.getGlobalBounds().height + 10));
+    _rect.setSize(sf::Vector2f(_text.getGlobalBounds().width+3,_text.getGlobalBounds().height + 10));
+    _rect.setOutlineColor(sf::Color(255,255,255));
+    _rect.setOutlineThickness(2);
+}
+Button::Button(std::string str, sf::Vector2f position){
+    _text.setFont(_font);
+    _text.setString(str);
+    _text.setFillColor(sf::Color::White);
+    _text.setCharacterSize(20);
+    _text.setPosition(position);
+    _text.setStyle(sf::Text::Bold);
+    _rect.setPosition(_text.getPosition());
+    _fill=sf::Color(0,0,0);
+    _rect.setFillColor(_fill);
+    _rect.setSize(sf::Vector2f(_text.getGlobalBounds().width+3,_text.getGlobalBounds().height + 10));
+    _rect.setOutlineColor(sf::Color(255,255,255));
+    _rect.setOutlineThickness(2);
 }
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const{ 
     target.draw(_rect, states);

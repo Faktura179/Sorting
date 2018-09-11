@@ -10,6 +10,8 @@ private:
     sf::RenderWindow _window;
 public:
     Machine();
+    Machine(const Machine&) = delete;
+    Machine& operator=(const Machine) = delete;
     void draw();
     void update();
     void setState(AbstractState*);
