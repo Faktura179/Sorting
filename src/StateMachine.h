@@ -2,6 +2,7 @@
 #define StateMachine_H
 
 #include "State.h"
+#include <SFML/Graphics.hpp>
 
 class AbstractState;
 class Machine{

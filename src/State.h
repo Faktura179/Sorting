@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include "StateMachine.h"
 #include "Button.h"
+#include "SortingStates.h"
+#include <random>
+#include <functional>
 class Machine;
 class Button;
 
@@ -42,4 +45,17 @@ public:
     void update(Machine*);
     ~MenuState();
 };
+
+class BubbleState : public AbstractState{
+    sf::RectangleShape* _rect;
+    Button* _btn;
+    sf::Clock _clock;
+public:
+    BubbleState();
+    void draw(sf::RenderWindow*);
+    void handleEvents(sf::Event, Machine*);
+    void update(Machine*);
+    ~BubbleState();
+};
+
 #endif

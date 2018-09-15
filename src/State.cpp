@@ -2,6 +2,10 @@
 #include "State.h"
 
 
+std::default_random_engine generator;
+std::uniform_int_distribution<int> distribution(1,160);
+auto getRand = std::bind(distribution, generator);
+
 SplashState::SplashState(){
     if(!_font.loadFromFile("assets/arial.ttf")){
         std::cerr << "Error while loading a font\n";
@@ -57,11 +61,61 @@ void MenuState::handleEvents(sf::Event event, Machine* machine){
     if(event.type == sf::Event::MouseButtonPressed){
         if(event.mouseButton.button==sf::Mouse::Left){
             _btn[0].onClick(machine, [](Machine* machine){machine->setState(new SplashState());});
-
+            _btn[1].onClick(machine, [](Machine* machine){machine->setState(new BubbleState());});
             _btn[6].onClick(machine, [](Machine* machine){machine->getWindow()->close();});
         }
+    }else if(event.type==sf::Event::EventType::KeyPressed){
+        switch(event.key.code){
+            case sf::Keyboard::B:
+                machine->setState(new BubbleState());
+                break;
+        }
+
     }
 }
 MenuState::~MenuState(){
     delete[] _btn;
+}
+
+BubbleState::BubbleState(){
+    _rect = new sf::RectangleShape[20];
+    _btn = new Button("Back",sf::Vector2f(740,510));
+    for(int i=0;i<20;i++){
+        _rect[i].setSize(sf::Vector2f(20,5+getRand()*3));
+        _rect[i].setPosition(sf::Vector2f(100+i*30,500-_rect[i].getSize().y));
+    }
+}
+void BubbleState::update(Machine* machine){
+    _btn->hover(machine->getWindow());
+
+    if(_clock.getElapsedTime().asSeconds()>0.2f){
+        for(int j=0;j<19;j++){
+            if(_rect[j].getPosition().y<_rect[j+1].getPosition().y){
+                sf::RectangleShape tmpRect(_rect[j]);
+                _rect[j]=_rect[j+1];
+                _rect[j+1]=tmpRect;
+                _rect[j].setPosition(_rect[j].getPosition().x-30,_rect[j].getPosition().y);
+                _rect[j+1].setPosition(_rect[j+1].getPosition().x+30,_rect[j+1].getPosition().y);
+                break;
+            }
+        }
+        _clock.restart();
+    }
+}
+void BubbleState::draw(sf::RenderWindow* window){
+    for(int i=0;i<20;i++){
+        window->draw(_rect[i]);
+    }
+    window->draw(*_btn);
+}
+void BubbleState::handleEvents(sf::Event event, Machine* machine){
+    if(event.type == sf::Event::MouseButtonPressed){
+        if(event.mouseButton.button==sf::Mouse::Left){
+            _btn->onClick(machine, [](Machine* machine){machine->setState(new MenuState());});
+        }
+    }
+}
+BubbleState::~BubbleState(){    
+    delete[] _rect;
+    delete _btn;
 }
