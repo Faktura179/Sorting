@@ -58,4 +58,17 @@ public:
     ~BubbleState();
 };
 
+class MergeState : public AbstractState{
+    std::vector<sf::RectangleShape> _rect;
+    Button* _btn;
+    sf::Clock _clock;
+    int _arrSize=1;
+public:
+    MergeState();
+    void draw(sf::RenderWindow*);
+    void handleEvents(sf::Event, Machine*);
+    void update(Machine*);
+    ~MergeState();
+};
+
 #endif

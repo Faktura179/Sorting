@@ -14,6 +14,8 @@ Machine::Machine(){
 	_window.setActive(true);
 }
 void Machine::draw(){
+	// clear the buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     _state -> draw(&_window);
 }
 void Machine::update(){

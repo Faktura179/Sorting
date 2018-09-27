@@ -3,32 +3,33 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
+#include <iostream>
 #include "stdafx.h"
 
 int main()
 {
-	Machine screens;
-	// load resources, initialize the OpenGL states, ...
+	//try{
+		Machine screens;
+		// load resources, initialize the OpenGL states, ...
 
-	// run the main loop
-	while (screens.windowIsOpen())
-	{
-		// handle events
-		screens.handleEvents();
+		// run the main loop
+		while (screens.windowIsOpen())
+		{
+			// handle events
+			screens.handleEvents();
 
-		//update
-		screens.update();
+			//update
+			screens.update();
 
-		// clear the buffers
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			// draw...
+			screens.draw();
 
-		// draw...
-		screens.draw();
-
-		// end the current frame (internally swaps the front and back buffers)
-		screens.windowDisplay();
-	}
-
+			// end the current frame (internally swaps the front and back buffers)
+			screens.windowDisplay();
+		}
+	//}catch(const std::exception &ex){
+		//std::cerr<< ex.what()<<std::endl;
+	//}
 	// release resources...
 
 	return 0;

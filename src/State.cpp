@@ -61,7 +61,8 @@ void MenuState::handleEvents(sf::Event event, Machine* machine){
     if(event.type == sf::Event::MouseButtonPressed){
         if(event.mouseButton.button==sf::Mouse::Left){
             _btn[0].onClick(machine, [](Machine* machine){machine->setState(new SplashState());});
-            _btn[1].onClick(machine, [](Machine* machine){machine->setState(new BubbleState());});
+            _btn[1].onClick(machine, [](Machine* machine){machine->setState(new BubbleState());machine->draw();machine->windowDisplay();});
+            _btn[2].onClick(machine, [](Machine* machine){machine->setState(new MergeState()); machine->draw();machine->windowDisplay();});
             _btn[6].onClick(machine, [](Machine* machine){machine->getWindow()->close();});
         }
     }else if(event.type==sf::Event::EventType::KeyPressed){
@@ -117,5 +118,66 @@ void BubbleState::handleEvents(sf::Event event, Machine* machine){
 }
 BubbleState::~BubbleState(){    
     delete[] _rect;
+    delete _btn;
+}
+
+MergeState::MergeState(){
+    _btn = new Button("Back",sf::Vector2f(740,510));
+    for(int i=0;i<20;i++){
+        _rect.push_back(sf::RectangleShape(sf::Vector2f(20,5+getRand()*3)));
+        _rect.at(i).setPosition(sf::Vector2f(100+i*30,500-_rect[i].getSize().y));
+    }
+}
+void MergeState::update(Machine* machine){
+    _btn->hover(machine->getWindow());
+
+    for(int i=_arrSize;i<20;i=i*2){
+        for(int j=0;j<20;j=j+2*i){
+            std::vector<sf::RectangleShape> tmpArr;
+            int k=j, l=j+i;
+            while(tmpArr.size()<2*i){
+                if(tmpArr.size()<=20){
+                    if(l>j+2*i || l==19){
+                        tmpArr.push_back(_rect.at(k));
+                        k++;
+                    }else if(k==l){
+                        tmpArr.push_back(_rect.at(l));
+                        l++;
+                        break;
+                    }else if(_rect.at(k).getPosition().y<_rect.at(l).getPosition().y){
+                        tmpArr.push_back(_rect.at(l));
+                        l++;
+                    }else{
+                        tmpArr.push_back(_rect.at(k));
+                        k++;
+                    }
+                }else{
+                    break;
+                }
+            }
+            while(!tmpArr.empty()){
+                _rect.at(j + tmpArr.size()-1) = tmpArr.back();
+                tmpArr.pop_back();
+            }
+            machine->draw();
+            machine->windowDisplay();
+        }
+        _arrSize=i;
+    }
+}
+void MergeState::draw(sf::RenderWindow* window){
+    for(int i=0;i<20;i++){
+        window->draw(_rect[i]);
+    }
+    window->draw(*_btn);
+}
+void MergeState::handleEvents(sf::Event event, Machine* machine){
+     if(event.type == sf::Event::MouseButtonPressed){
+        if(event.mouseButton.button==sf::Mouse::Left){
+            _btn->onClick(machine, [](Machine* machine){machine->setState(new MenuState());});
+        }
+    }
+}
+MergeState::~MergeState(){
     delete _btn;
 }
