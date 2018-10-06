@@ -128,37 +128,66 @@ MergeState::MergeState(){
         _rect.at(i).setPosition(sf::Vector2f(100+i*30,500-_rect[i].getSize().y));
     }
 }
+
+void mergesort(std::vector<sf::RectangleShape> &arr,int left ,int elements){
+    int end = left + 2 * elements;
+    int middle = elements + left;
+    std::vector<sf::RectangleShape> tmpArr;
+    std::vector<sf::RectangleShape> tmpArr2;
+    for(int i=0;i<elements;i++){
+        if(left+i<20){
+            tmpArr.push_back(arr.at(left+i));
+        }
+    }
+    if(end>=20){
+        if(middle>=20){
+            return;
+        }else{
+           for(int i=0;i<elements;i++){
+               if(middle+i<20){
+                   tmpArr2.push_back(arr.at(middle+i));
+               }
+           } 
+        }
+    }else{
+        for(int i=0;i<elements;i++){
+            if(middle+i<20){
+                tmpArr2.push_back(arr.at(middle+i));
+            }
+        }
+    }
+    std::vector<sf::RectangleShape> sorted;
+    while(!tmpArr.empty() && !tmpArr2.empty()){
+        if(tmpArr.front().getPosition().y>tmpArr2.front().getPosition().y){
+            sorted.push_back(tmpArr.front());
+            tmpArr.erase(tmpArr.cbegin());
+        }else{
+            sorted.push_back(tmpArr2.front());
+            tmpArr2.erase(tmpArr2.cbegin());
+        }
+    }
+    while(!tmpArr.empty()){
+        sorted.push_back(tmpArr.front());
+        tmpArr.erase(tmpArr.cbegin());
+    }
+    while(!tmpArr2.empty()){
+        sorted.push_back(tmpArr2.front());
+        tmpArr2.erase(tmpArr2.cbegin());
+    }
+    for(int i=0;i<sorted.size();i++){
+        sorted.at(i).setPosition(100 + 30*left + 30*i, sorted.at(i).getPosition().y);
+    }
+    for(int i=0;i<sorted.size();i++){
+        arr.at(left+i)=sorted.at(i);
+    }
+}
+
 void MergeState::update(Machine* machine){
     _btn->hover(machine->getWindow());
 
     for(int i=_arrSize;i<20;i=i*2){
         for(int j=0;j<20;j=j+2*i){
-            std::vector<sf::RectangleShape> tmpArr;
-            int k=j, l=j+i;
-            while(tmpArr.size()<2*i){
-                if(tmpArr.size()<=20){
-                    if(l>j+2*i || l==19){
-                        tmpArr.push_back(_rect.at(k));
-                        k++;
-                    }else if(k==l){
-                        tmpArr.push_back(_rect.at(l));
-                        l++;
-                        break;
-                    }else if(_rect.at(k).getPosition().y<_rect.at(l).getPosition().y){
-                        tmpArr.push_back(_rect.at(l));
-                        l++;
-                    }else{
-                        tmpArr.push_back(_rect.at(k));
-                        k++;
-                    }
-                }else{
-                    break;
-                }
-            }
-            while(!tmpArr.empty()){
-                _rect.at(j + tmpArr.size()-1) = tmpArr.back();
-                tmpArr.pop_back();
-            }
+            mergesort(_rect, j, i);
             machine->draw();
             machine->windowDisplay();
         }
